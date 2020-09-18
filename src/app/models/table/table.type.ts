@@ -1,6 +1,6 @@
 export type ItemType = {
   id: number,
-  createAt: Date,
+  createdAt: string,
   moduleName: string,
   modulePurpose: number,
   rating: number

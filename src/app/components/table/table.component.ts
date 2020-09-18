@@ -15,14 +15,25 @@ export class TableComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<boolean> = new Subject();
 
-  private sourceTable$: Observable<ItemType[]> = this.tableService.getSource();
+  public sourceTable$: Observable<ItemType[]> = this.tableService.getSource();
+
+  public dataTable:ItemType[] = null;
 
   constructor(
     private tableService: TableService,
     private cdr: ChangeDetectorRef
   ) {}
 
+  public trackByMethod(index: number, name: ItemType): number {
+    return name.id;
+  };
+
   ngOnInit() {
+    this.sourceTable$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((data) => {
+      this.dataTable = data;
+    })
   }
 
   ngOnDestroy() {
