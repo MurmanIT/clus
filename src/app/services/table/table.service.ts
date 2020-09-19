@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@env';
 import { EMPTY, Observable, of, range } from 'rxjs';
-import { catchError, concatMap, delay } from 'rxjs/operators';
+import { catchError, concatMap, delay, switchMap } from 'rxjs/operators';
 import { ItemType } from 'src/app/models';
-import { environment }  from '@env';
+import { TableType } from './../../models/table/table.type';
 
 @Injectable()
 
@@ -11,9 +12,14 @@ export class TableService {
 
   constructor(private http: HttpClient) { }
 
-  getSource(): Observable<ItemType[]> {
+  getSource(): Observable<TableType> {
     return this.http.get<ItemType[]>(`${environment.sourceAPI}v1/beacons`)
       .pipe(
+        switchMap((data) => {
+          return of({
+            data, count: data.length
+          });
+        }),
         catchError(
           error => {
             console.error(error);
@@ -23,11 +29,24 @@ export class TableService {
       );
   };
 
-  getRandomRange(): Observable<number> {
-    return range(1, 10).pipe(
+  private randomRange(beginRange: number, endRange: number): Observable<number> {
+    return range(beginRange, endRange).pipe(
       concatMap(rangeInterval => of(rangeInterval).pipe(
-        delay(1000 + Math.random() * 4000),
+        delay(1000 + Math.random() * 3000),
       ))
+    );
+  }
+
+  getRandomRange(endRange: number = 3): Observable<number> {
+    let beginRange = 1;
+    return this.randomRange(beginRange, endRange).pipe(
+      switchMap((i) => {
+        if (i === endRange) {
+          return this.getRandomRange( Math.floor(Math.random() * 1000) );
+        } else {
+          return of(i);
+        }
+      })
     );
   }
 }

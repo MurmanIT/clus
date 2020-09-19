@@ -1,5 +1,5 @@
-<div *ngIf="sourceTable$ | async as sourceTable; else error">
-  <table class="table">
+<div>
+  <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let source of sourceTable | sort: 'rating'; trackBy: trackByMethod">
+      <tr *ngFor="let source of table$ | async | sort: 'rating'; trackBy: trackByMethod">
         <th scope="row">{{source.id}}</th>
         <td>{{source.createdAt | date: 'd.m.yy h:mm'}}</td>
         <td>{{source.moduleName}}</td>
@@ -20,9 +20,3 @@
     </tbody>
   </table>
 </div>
-
-<ng-template #error>
-  <div class="alert alert-danger" role="alert">
-    Failed to upload data
-  </div>
-</ng-template>
