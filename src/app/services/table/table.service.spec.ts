@@ -24,7 +24,7 @@ describe('Service: Table', () => {
   afterEach(() => httpMock.verify());
 
   describe('#getSource', () => {
-    it('should return an Observalbe<ItemType[]>', () => {
+    it('should return an Observalbe<TableType>', () => {
       const dummyTable = [
         {
           id: 15,
@@ -43,8 +43,7 @@ describe('Service: Table', () => {
       ];
 
       service.getSource().subscribe(data => {
-        expect(data.length).toBe(2);
-        expect(data).toEqual(dummyTable);
+        expect(data).toEqual({ data: dummyTable, count: dummyTable.length });
       });
 
       const req = httpMock.expectOne(`${environment.sourceAPI}v1/beacons`);
