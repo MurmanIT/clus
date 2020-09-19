@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { filter, pluck, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
-import { ItemType } from 'src/app/models';
+import { ItemType, TableType } from 'src/app/models';
 import { TableService } from 'src/app/services';
-import { TableType } from './../../models/table/table.type';
 
 @Component({
   selector: 'app-table-components',
@@ -52,7 +51,8 @@ export class TableComponent implements OnInit, OnDestroy {
           ...source.data[index], rating: index
         };
         return of(source);
-      })
+      }),
+      takeUntil(this.destroy$)
     ).subscribe((data) => {
         this.subjectTable$.next(data);
         this.cdr.detectChanges();
