@@ -1,8 +1,8 @@
+import { ItemType, TableType } from '@admin/models';
+import { TableService } from '@admin/services';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { filter, pluck, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
-import { ItemType, TableType } from 'src/app/models';
-import { TableService } from 'src/app/services';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { filter, pluck, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-table-components',
@@ -38,29 +38,10 @@ export class TableComponent implements OnInit, OnDestroy {
     return name.id;
   };
 
-  private randomInt(min, max): number {
-    return min + Math.floor((max - min) * Math.random());
-  }
-
   private updateTable(): void {
-    this.tableService.getRandomRange().pipe(
-      withLatestFrom(this.subjectTable$),
-      switchMap(([interval, source]) => {
-        const index = this.randomInt(0, source.data.length - 1);
-        source.data[index] = {
-          ...source.data[index], rating: index
-        };
-        return of(source);
-      }),
-      takeUntil(this.destroy$)
-    ).subscribe((data) => {
-        this.subjectTable$.next(data);
-        this.cdr.detectChanges();
-    });
   }
 
   ngOnInit() {
-    this.updateTable();
   }
 
   ngOnDestroy() {

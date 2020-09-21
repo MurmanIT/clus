@@ -1,24 +1,26 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { AdminModule } from './admin/admin.module';
 import { AppComponent } from './app.component';
-import { TableComponent } from './components/table/table.component';
-import { TableSortPipe } from './pipes/table/table-sort.pipe';
-import { TableService } from './services/table/table.service';
+import { AuthModule } from './auth/auth.module';
+import { PagesModule } from './pages/pages.module';
+import { StaticModule } from './static/static.module';
 
 
 @NgModule({
   declarations: [
-    TableSortPipe,
     AppComponent,
-    TableComponent,
    ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    AdminModule,
+    PagesModule,
+    StaticModule,
+    AuthModule
   ],
   providers: [
-    TableService
   ],
   bootstrap: [AppComponent]
 })
