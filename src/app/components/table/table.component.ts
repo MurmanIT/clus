@@ -38,7 +38,7 @@ export class TableComponent implements OnInit, OnDestroy {
     return name.id;
   };
 
-  private randomInt(min, max) {
+  private randomInt(min, max): number {
     return min + Math.floor((max - min) * Math.random());
   }
 

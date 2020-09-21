@@ -12,7 +12,7 @@ export class TableService {
 
   constructor(private http: HttpClient) { }
 
-  getSource(): Observable<TableType> {
+  public getSource(): Observable<TableType> {
     return this.http.get<ItemType[]>(`${environment.sourceAPI}v1/beacons`)
       .pipe(
         switchMap((data) => {
@@ -37,7 +37,7 @@ export class TableService {
     );
   }
 
-  getRandomRange(endRange: number = 3): Observable<number> {
+  public getRandomRange(endRange: number = 3): Observable<number> {
     let beginRange = 1;
     return this.randomRange(beginRange, endRange).pipe(
       switchMap((i) => {
